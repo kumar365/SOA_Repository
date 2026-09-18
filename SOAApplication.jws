@@ -28,6 +28,7 @@
    </list>
    <list n="listOfChildren">
       <hash><url n="URL" path="ArithmeticService/ArithmeticService.jpr"/></hash>
+      <hash><url n="URL" path="CardValidationSystem/CardValidationSystem.jpr"/></hash>
       <hash><url n="URL" path="HelloWord/HelloWord.jpr"/></hash>
       <hash><url n="URL" path="Project1/Project1.jpr"/></hash>
    </list>
