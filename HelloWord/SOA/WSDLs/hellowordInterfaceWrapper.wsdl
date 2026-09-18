@@ -1,0 +1,15 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="hellowordInterface"
+     targetNamespace="http:/practice.com/demo1/hellowordInterface"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+     xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:tns="http:/practice.com/demo1/hellowordInterface"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    >
+    <plnk:partnerLinkType name="HellowordService">
+        <plnk:role name="hellowordPort" portType="tns:hellowordPort"/>
+    </plnk:partnerLinkType>
+    <wsdl:import namespace="http:/practice.com/demo1/hellowordInterface" location="hellowordInterface.wsdl"/>
+</wsdl:definitions>

@@ -1,0 +1,19 @@
+Sep 14, 2026 8:31:16 PM oracle.adfinternal.share.util.ProviderUtil loadProviderPlugin
+INFO: No ADFLoggerExtension registration, skipping.
+Sep 14, 2026 8:31:16 PM oracle.adf.share.logging.ADFLogger initADFLoggerExtension
+INFO: ADFLoggerExtensionODL setup complete
+2026-09-14 20:31:17.284/2.512 Oracle Coherence 14.1.2.0.0 <Info> (thread=main, member=n/a): Loaded operational configuration from "jar:file:/D:/Softwares/SOA_Installation/coherence/lib/coherence.jar!/tangosol-coherence.xml"
+2026-09-14 20:31:17.364/2.588 Oracle Coherence 14.1.2.0.0 <Info> (thread=main, member=n/a): Loaded operational overrides from "jar:file:/D:/Softwares/SOA_Installation/coherence/lib/coherence.jar!/com/oracle/coherence/defaults/tangosol-coherence-override-dev.xml"
+2026-09-14 20:31:17.404/2.630 Oracle Coherence 14.1.2.0.0 <Info> (thread=main, member=n/a): Loaded operational overrides from "jar:file:/D:/Softwares/SOA_Installation/soa/soa/modules/oracle.soa.fabric_11.1.1/fabric-runtime.jar!/tangosol-coherence-override.xml"
+2026-09-14 20:31:17.416/2.641 Oracle Coherence 14.1.2.0.0 <Info> (thread=main, member=n/a): Optional configuration override "cache-factory-config.xml" is not specified
+2026-09-14 20:31:17.418/2.642 Oracle Coherence 14.1.2.0.0 <Info> (thread=main, member=n/a): Optional configuration override "cache-factory-builder-config.xml" is not specified
+2026-09-14 20:31:17.420/2.644 Oracle Coherence 14.1.2.0.0 <Info> (thread=main, member=n/a): Optional configuration override "/custom-mbeans.xml" is not specified
+
+Oracle Coherence Version 14.1.2.0.0 Build 112309
+ Grid Edition: Development mode
+Copyright (c) 2000, 2024, Oracle and/or its affiliates. All rights reserved.
+
+2026-09-14 20:31:18.686/3.910 Oracle Coherence GE 14.1.2.0.0 <Info> (thread=main, member=n/a): The cluster name has not been configured, a value of "kumar's cluster" has been automatically generated
+2026-09-14 20:31:19.005/4.230 Oracle Coherence GE 14.1.2.0.0 <D5> (thread=main, member=n/a): Created cache factory com.tangosol.net.ExtensibleConfigurableCacheFactory
+Sep 14, 2026 8:31:19 PM oracle.soa.scac.ValidateComposite loadWSDLs
+WARNING: Validating WSDLs from WSDLManager....  with option UseSoaInfraMds:false
