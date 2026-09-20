@@ -13,4 +13,5 @@
            xmlns:sca-ext="http://xmlns.oracle.com/sca/1.0-ext">
   <property name="productVersion" type="xs:string" many="false">14.1.2.0.0</property>
   <property name="compositeID" type="xs:string" many="false">91f0ee9e-6512-42da-9695-6ba01be69912</property>
+  <property name="validateSchema" type="xs:boolean" many="false">true</property>
 </composite>

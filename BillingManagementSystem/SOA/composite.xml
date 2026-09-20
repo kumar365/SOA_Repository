@@ -12,8 +12,9 @@
            xmlns:ui="http://xmlns.oracle.com/soa/designer/"
            xmlns:sca-ext="http://xmlns.oracle.com/sca/1.0-ext">
   <import namespace="http://practice.com/SOAApplication/BillingManagementSystem/BMS_BPELProcess"
-          location="WSDLs/BMS_BPELProcess.wsdl" importType="wsdl"/>
-  <service name="bms_bpelprocess_client_ep" ui:wsdlLocation="WSDLs/BMS_BPELProcess.wsdl">
+          location="oramds:/apps/SOAApplication/BillingManagementSystem/WSDLs/BMS_BPELProcess.wsdl" importType="wsdl"/>
+  <service name="bms_bpelprocess_client_ep"
+           ui:wsdlLocation="oramds:/apps/SOAApplication/BillingManagementSystem/WSDLs/BMS_BPELProcess.wsdl">
     <interface.wsdl interface="http://practice.com/SOAApplication/BillingManagementSystem/BMS_BPELProcess#wsdl.interface(BMS_BPELProcess)"
                     callbackInterface="http://practice.com/SOAApplication/BillingManagementSystem/BMS_BPELProcess#wsdl.interface(BMS_BPELProcessCallback)"/>
     <binding.ws port="http://practice.com/SOAApplication/BillingManagementSystem/BMS_BPELProcess#wsdl.endpoint(bms_bpelprocess_client_ep/BMS_BPELProcess_pt)"/>
@@ -26,7 +27,8 @@
   <component name="BMS_BPELProcess" version="2.0">
     <implementation.bpel src="BPEL/BMS_BPELProcess.bpel"/>
     <componentType>
-      <service name="bms_bpelprocess_client" ui:wsdlLocation="WSDLs/BMS_BPELProcess.wsdl">
+      <service name="bms_bpelprocess_client"
+               ui:wsdlLocation="oramds:/apps/SOAApplication/BillingManagementSystem/WSDLs/BMS_BPELProcess.wsdl">
         <interface.wsdl interface="http://practice.com/SOAApplication/BillingManagementSystem/BMS_BPELProcess#wsdl.interface(BMS_BPELProcess)"
                         callbackInterface="http://practice.com/SOAApplication/BillingManagementSystem/BMS_BPELProcess#wsdl.interface(BMS_BPELProcessCallback)"/>
       </service>

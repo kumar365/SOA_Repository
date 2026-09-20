@@ -78,6 +78,10 @@
    <hash n="oracle.ide.model.TechnologyScopeConfiguration">
       <list n="technologyScope">
          <string v="SOA"/>
+         <string v="WSDL"/>
+         <string v="WSPolicy"/>
+         <string v="XML"/>
+         <string v="XML_SCHEMA"/>
       </list>
    </hash>
    <hash n="oracle.jdeveloper.compiler.OjcConfiguration">
@@ -126,6 +130,10 @@
                      <value n="displayName" v="Project Output"/>
                      <hash n="filters">
                         <list n="rules">
+                           <hash>
+                              <value n="pattern" v="SOAApplication/CardValidationSystem/"/>
+                              <value n="type" v="1"/>
+                           </hash>
                            <hash>
                               <value n="pattern" v="**"/>
                               <value n="type" v="0"/>

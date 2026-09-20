@@ -18,14 +18,14 @@
     <!--SPECIFICATION OF MAP SOURCES AND TARGETS, DO NOT MODIFY.-->
     <oracle-xsl-mapper:mapSources>
       <oracle-xsl-mapper:source type="WSDL">
-        <oracle-xsl-mapper:schema location="../WSDLs/BMS_BPELProcess.wsdl"/>
+        <oracle-xsl-mapper:schema location="oramds:/apps/SOAApplication/BillingManagementSystem/WSDLs/BMS_BPELProcess.wsdl"/>
         <oracle-xsl-mapper:rootElement name="bsRequest"
                                        namespace="http://practice.com/SOAApplication/BillingManagementSystem/BMS_BPELProcess"/>
       </oracle-xsl-mapper:source>
     </oracle-xsl-mapper:mapSources>
     <oracle-xsl-mapper:mapTargets>
       <oracle-xsl-mapper:target type="WSDL">
-        <oracle-xsl-mapper:schema location="../WSDLs/BMS_BPELProcess.wsdl"/>
+        <oracle-xsl-mapper:schema location="oramds:/apps/SOAApplication/BillingManagementSystem/WSDLs/BMS_BPELProcess.wsdl"/>
         <oracle-xsl-mapper:rootElement name="bsResponse"
                                        namespace="http://practice.com/SOAApplication/BillingManagementSystem/BMS_BPELProcess"/>
       </oracle-xsl-mapper:target>
