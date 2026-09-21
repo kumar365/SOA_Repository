@@ -16,6 +16,9 @@
   <import namespace="http://xmlns.oracle.com/SOAApplication/CardValidationSystem/CVSBPELProcess"
           location="oramds:/apps/SOAApplication/CardValidationSystem/WSDLs/CVSBPELProcess.wsdl"
           importType="wsdl"/>
+  <import namespace="http://practice.com/SOAApplication/BillingManagementSystem/BMS_BPELProcess"
+          location="oramds:/apps/SOAApplication/BillingManagementSystem/WSDLs/BMS_BPELProcess.wsdl"
+          importType="wsdl"/>
   <service name="ops_bpel_client_ep" ui:wsdlLocation="WSDLs/OPS_BPEL.wsdl">
     <interface.wsdl interface="http://xmlns.oracle.com/SOAApplication/OrderProcessingSystem/OPS_BPEL#wsdl.interface(OPS_BPEL)"
                     callbackInterface="http://xmlns.oracle.com/SOAApplication/OrderProcessingSystem/OPS_BPEL#wsdl.interface(OPS_BPELCallback)"/>
@@ -37,6 +40,11 @@
                  ui:wsdlLocation="oramds:/apps/SOAApplication/CardValidationSystem/WSDLs/CVSBPELProcess.wsdl">
         <interface.wsdl interface="http://xmlns.oracle.com/SOAApplication/CardValidationSystem/CVSBPELProcess#wsdl.interface(CVSBPELProcess)"/>
       </reference>
+      <reference name="BMSReference"
+                 ui:wsdlLocation="oramds:/apps/SOAApplication/BillingManagementSystem/WSDLs/BMS_BPELProcess.wsdl">
+        <interface.wsdl interface="http://practice.com/SOAApplication/BillingManagementSystem/BMS_BPELProcess#wsdl.interface(BMS_BPELProcess)"
+                        callbackInterface="http://practice.com/SOAApplication/BillingManagementSystem/BMS_BPELProcess#wsdl.interface(BMS_BPELProcessCallback)"/>
+      </reference>
     </componentType>
     <property name="bpel.config.oneWayDeliveryPolicy" type="xs:string" many="false">async.persist</property>
   </component>
@@ -49,6 +57,19 @@
       <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">WSDLDriven</property>
     </binding.ws>
   </reference>
+  <reference name="BMSReference"
+             ui:wsdlLocation="oramds:/apps/SOAApplication/BillingManagementSystem/WSDLs/BMS_BPELProcess.wsdl">
+    <interface.wsdl interface="http://practice.com/SOAApplication/BillingManagementSystem/BMS_BPELProcess#wsdl.interface(BMS_BPELProcess)"
+                    callbackInterface="http://practice.com/SOAApplication/BillingManagementSystem/BMS_BPELProcess#wsdl.interface(BMS_BPELProcessCallback)"/>
+    <binding.ws port="http://practice.com/SOAApplication/BillingManagementSystem/BMS_BPELProcess#wsdl.endpoint(bms_bpelprocess_client_ep/BMS_BPELProcess_pt)"
+                location="http://localhost:7101/soa-infra/services/default/BillingManagementSystem/bms_bpelprocess_client_ep?WSDL"
+                soapVersion="1.1">
+      <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">WSDLDriven</property>
+    </binding.ws>
+    <callback>
+      <binding.ws port="http://practice.com/SOAApplication/BillingManagementSystem/BMS_BPELProcess#wsdl.endpoint(bms_bpelprocess_client_ep/BMS_BPELProcessCallback_pt)"/>
+    </callback>
+  </reference>
   <wire>
     <source.uri>ops_bpel_client_ep</source.uri>
     <target.uri>OPS_BPEL/ops_bpel_client</target.uri>
@@ -56,5 +77,9 @@
   <wire>
     <source.uri>OPS_BPEL/CVSReference</source.uri>
     <target.uri>CVSReference</target.uri>
+  </wire>
+  <wire>
+    <source.uri>OPS_BPEL/BMSReference</source.uri>
+    <target.uri>BMSReference</target.uri>
   </wire>
 </composite>
