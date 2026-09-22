@@ -52,7 +52,7 @@
              ui:wsdlLocation="oramds:/apps/SOAApplication/CardValidationSystem/WSDLs/CVSBPELProcess.wsdl">
     <interface.wsdl interface="http://xmlns.oracle.com/SOAApplication/CardValidationSystem/CVSBPELProcess#wsdl.interface(CVSBPELProcess)"/>
     <binding.ws port="http://xmlns.oracle.com/SOAApplication/CardValidationSystem/CVSBPELProcess#wsdl.endpoint(cvsbpelprocess_client_ep/CVSBPELProcess_pt)"
-                location="http://localhost:7101/soa-infra/services/default/CardValidationSystem/cvsbpelprocess_client_ep?WSDL"
+                location="abc"
                 soapVersion="1.1">
       <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">WSDLDriven</property>
     </binding.ws>
@@ -62,7 +62,7 @@
     <interface.wsdl interface="http://practice.com/SOAApplication/BillingManagementSystem/BMS_BPELProcess#wsdl.interface(BMS_BPELProcess)"
                     callbackInterface="http://practice.com/SOAApplication/BillingManagementSystem/BMS_BPELProcess#wsdl.interface(BMS_BPELProcessCallback)"/>
     <binding.ws port="http://practice.com/SOAApplication/BillingManagementSystem/BMS_BPELProcess#wsdl.endpoint(bms_bpelprocess_client_ep/BMS_BPELProcess_pt)"
-                location="http://localhost:7101/soa-infra/services/default/BillingManagementSystem/bms_bpelprocess_client_ep?WSDL"
+                location="xyz"
                 soapVersion="1.1">
       <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">WSDLDriven</property>
     </binding.ws>
