@@ -131,7 +131,7 @@
                      <hash n="filters">
                         <list n="rules">
                            <hash>
-                              <value n="pattern" v="SOAApplication/CardValidationSystem/"/>
+                              <value n="pattern" v="SOAApplication/BillingManagementSystem/"/>
                               <value n="type" v="1"/>
                            </hash>
                            <hash>
