@@ -27,6 +27,9 @@
 	<wsdl:message name="CVSBPELProcessResponseMessage">
 		<wsdl:part name="payload" element="client:cardRes"/>
 	</wsdl:message>
+        <wsdl:message name="businessFaultMessage">
+		<wsdl:part name="payload" element="client:faultSchema"/>
+	</wsdl:message>
 
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	PORT TYPE DEFINITION - A port type groups a set of operations into
@@ -38,6 +41,7 @@
 		<wsdl:operation name="process">
 			<wsdl:input  message="client:CVSBPELProcessRequestMessage" />
 			<wsdl:output message="client:CVSBPELProcessResponseMessage"/>
+                        <wsdl:fault name="invalidCCFault" message="client:businessFaultMessage"/>
 		</wsdl:operation>
 	</wsdl:portType>
 

@@ -29,7 +29,8 @@
          xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
          xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
          xmlns:ns2="http://practice.com/SOAApplication/BillingManagementSystem/BMS_BPELProcess">
-
+    <import namespace="http://schemas.oracle.com/bpel/extension" location="../WSDLs/RuntimeFault.wsdl"
+            importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import ui:processWSDL="true" namespace="http://xmlns.oracle.com/SOAApplication/OrderProcessingSystem/OPS_BPEL" location="../WSDLs/OPS_BPEL.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <!-- 
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,6 +85,38 @@
                 <variable name="Invoke_cvs_InputVariable" messageType="ns1:CVSBPELProcessRequestMessage"/>
                 <variable name="Invoke_cvs_OutputVariable" messageType="ns1:CVSBPELProcessResponseMessage"/>
             </variables>
+            <faultHandlers>
+                <catch bpelx:name="invalidCCFaultCatch" faultName="ns1:invalidCCFault"
+                       faultVariable="invalidCCFaultVar" faultMessageType="ns1:businessFaultMessage">
+                    <assign name="Assign3">
+                        <copy>
+                            <from>$invalidCCFaultVar.payload/ns1:faultName</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:ccValidationStatus</to>
+                        </copy>
+                    </assign>
+                </catch>
+                <catch faultName="bpelx:remoteFault" faultVariable="remoteFaultVar"
+                       faultMessageType="bpelx:RuntimeFaultMessage">
+                    <assign name="Assign2">
+                        <copy>
+                            <from>$remoteFaultVar.summary</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:orderStatus</to>
+                        </copy>
+                        <copy>
+                            <from>ora:getFaultName()</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:ccValidationStatus</to>
+                        </copy>
+                    </assign>
+                </catch>
+                <catchAll>
+                    <assign name="AssignErrorData">
+                        <copy>
+                            <from>"ERROR"</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:ccValidationStatus</to>
+                        </copy>
+                    </assign>
+                </catchAll>
+            </faultHandlers>
             <sequence name="Sequence1">
                 <assign name="AssignCVSRequestMappings">
                     <copy>
@@ -167,6 +200,18 @@
                     </copy>
                     <copy>
                         <from>$outputVariable.payload/client:orderStatus = "Unable to process your order, please enter valid data"</from>
+                        <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:orderStatus</to>
+                    </copy>
+                </assign>
+            </elseif>
+            <elseif>
+                <documentation>
+                    <![CDATA[Error Case]]>
+                </documentation>
+                <condition>$outputVariable.payload/client:ccValidationStatus="ERROR"</condition>
+                <assign name="AssignErrorOrderStatus">
+                    <copy>
+                        <from>"Card validation status is failed"</from>
                         <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:orderStatus</to>
                     </copy>
                 </assign>
