@@ -86,6 +86,15 @@
                 <variable name="Invoke_cvs_OutputVariable" messageType="ns1:CVSBPELProcessResponseMessage"/>
             </variables>
             <faultHandlers>
+                <catch bpelx:name="invalidCCFaultCatch" faultName="ns1:invalidCCFault"
+                       faultVariable="invalidCCFaultVar" faultMessageType="ns1:businessFaultMessage">
+                    <assign name="Assign3">
+                        <copy>
+                            <from>$invalidCCFaultVar.payload/ns1:faultName</from>
+                            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:ccValidationStatus</to>
+                        </copy>
+                    </assign>
+                </catch>
                 <catch faultName="bpelx:remoteFault" faultVariable="remoteFaultVar"
                        faultMessageType="bpelx:RuntimeFaultMessage">
                     <assign name="Assign2">
