@@ -16,7 +16,9 @@
                xmlns:ora="http://schemas.oracle.com/xpath/extension"
                xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
                xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
-         xmlns:ns1="http://xmlns.oracle.com/pcbpel/adapter/file/SOAApplication/PracticeAdapters/File_Read_StudentInfo">
+         xmlns:ns1="http://xmlns.oracle.com/pcbpel/adapter/file/SOAApplication/PracticeAdapters/File_Read_StudentInfo"
+         xmlns:ui="http://xmlns.oracle.com/soa/designer"
+         xmlns:ns2="http://xmlns.oracle.com/pcbpel/adapter/file/SOAApplication/PracticeAdapters/File_Write_StuResult">
 
   <!--
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -25,8 +27,12 @@
      services integrated within this business process
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   -->
+  <import namespace="http://xmlns.oracle.com/pcbpel/adapter/file/SOAApplication/PracticeAdapters/File_Read_StudentInfo"
+          location="../WSDLs/File_Read_StudentInfo.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"
+          ui:processWSDL="true"/>
   <partnerLinks>
     <partnerLink name="File_Read_StudentInfo" partnerLinkType="ns1:Read_plt" myRole="Read_role"/>
+    <partnerLink name="File_Write_StuResult" partnerLinkType="ns2:Write_plt" partnerRole="Write_role"/>
   </partnerLinks>
   <variables>
     <variable name="File_Read_InputVariable" messageType="ns1:Read_msg"/>
@@ -38,5 +44,24 @@
         <empty name="Empty1"/>
       </onMessage>
     </pick>
+    <scope name="Scope_File_write">
+      <variables>
+        <variable name="File_Adapter_Write_InputVariable" messageType="ns2:Write_msg"/>
+      </variables>
+      <sequence name="Sequence1">
+        <assign name="StuResultTransformation">
+          <bpelx:annotation>
+            <bpelx:pattern patternName="bpelx:transformation"></bpelx:pattern>
+          </bpelx:annotation>
+          <copy>
+            <from>ora:doXSLTransformForDoc("../Transformations/StuResultTransformation_1.xsl", $File_Read_InputVariable.body)</from>
+            <to variable="File_Adapter_Write_InputVariable" part="body"/>
+          </copy>
+        </assign>
+        <invoke name="Invoke_File_Adapter_Write" partnerLink="File_Write_StuResult"
+                portType="ns2:Write_ptt" operation="Write" inputVariable="File_Adapter_Write_InputVariable"
+                bpelx:invokeAsDetail="no"/>
+      </sequence>
+    </scope>
   </sequence>
 </process>
