@@ -1,0 +1,67 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer
+
+  Created: Sun Sep 27 13:47:57 GMT 2026
+  Author:  kumar
+  Type: BPEL 2.0 Process
+  Purpose: Empty BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="FileAdapterReadBPELProcess"
+               targetNamespace="http://xmlns.oracle.com/SOAApplication/PracticeAdapters/FileAdapterReadBPELProcess"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.oracle.com/SOAApplication/PracticeAdapters/FileAdapterReadBPELProcess"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+               xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://xmlns.oracle.com/pcbpel/adapter/file/SOAApplication/PracticeAdapters/File_Read_StudentInfo"
+         xmlns:ui="http://xmlns.oracle.com/soa/designer"
+         xmlns:ns2="http://xmlns.oracle.com/pcbpel/adapter/file/SOAApplication/PracticeAdapters/File_Write_StuResult">
+
+  <!--
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC
+     Set of activities coordinating the flow of messages across the
+     services integrated within this business process
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <import namespace="http://xmlns.oracle.com/pcbpel/adapter/file/SOAApplication/PracticeAdapters/File_Read_StudentInfo"
+          location="../WSDLs/File_Read_StudentInfo.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"
+          ui:processWSDL="true"/>
+  <partnerLinks>
+    <partnerLink name="File_Read_StudentInfo" partnerLinkType="ns1:Read_plt" myRole="Read_role"/>
+    <partnerLink name="File_Write_StuResult" partnerLinkType="ns2:Write_plt" partnerRole="Write_role"/>
+  </partnerLinks>
+  <variables>
+    <variable name="File_Read_InputVariable" messageType="ns1:Read_msg"/>
+  </variables>
+  <sequence name="main">
+    <pick name="Pick1" createInstance="yes">
+      <onMessage bpelx:name="FileRead" partnerLink="File_Read_StudentInfo" variable="File_Read_InputVariable"
+                 portType="ns1:Read_ptt" operation="Read">
+        <empty name="Empty1"/>
+      </onMessage>
+    </pick>
+    <scope name="Scope_File_write">
+      <variables>
+        <variable name="File_Adapter_Write_InputVariable" messageType="ns2:Write_msg"/>
+      </variables>
+      <sequence name="Sequence1">
+        <assign name="StuResultTransformation">
+          <bpelx:annotation>
+            <bpelx:pattern patternName="bpelx:transformation"></bpelx:pattern>
+          </bpelx:annotation>
+          <copy>
+            <from>ora:doXSLTransformForDoc("../Transformations/StuResultTransformation_1.xsl", $File_Read_InputVariable.body)</from>
+            <to variable="File_Adapter_Write_InputVariable" part="body"/>
+          </copy>
+        </assign>
+        <invoke name="Invoke_File_Adapter_Write" partnerLink="File_Write_StuResult"
+                portType="ns2:Write_ptt" operation="Write" inputVariable="File_Adapter_Write_InputVariable"
+                bpelx:invokeAsDetail="no"/>
+      </sequence>
+    </scope>
+  </sequence>
+</process>
