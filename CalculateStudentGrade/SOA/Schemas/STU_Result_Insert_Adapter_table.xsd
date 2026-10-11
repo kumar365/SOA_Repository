@@ -11,12 +11,18 @@
          <xs:element name="stuId" type="xs:decimal" nillable="true"/>
          <xs:element name="stuName" type="string50" minOccurs="0" nillable="true"/>
          <xs:element name="totalMarks" type="xs:decimal" minOccurs="0" nillable="true"/>
-         <xs:element name="grade" type="string10" minOccurs="0" nillable="true"/>
+         <xs:element name="grade" type="string20" minOccurs="0" nillable="true"/>
+         <xs:element name="status" type="string10" minOccurs="0" nillable="true"/>
       </xs:sequence>
    </xs:complexType>
    <xs:simpleType name="string50">
       <xs:restriction base="xs:string">
          <xs:maxLength value="50"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="string20">
+      <xs:restriction base="xs:string">
+         <xs:maxLength value="20"/>
       </xs:restriction>
    </xs:simpleType>
    <xs:simpleType name="string10">

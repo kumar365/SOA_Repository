@@ -35,6 +35,7 @@
       <hash><url n="URL" path="HelloWord/HelloWord.jpr"/></hash>
       <hash><url n="URL" path="OrderProcessingSystem/OrderProcessingSystem.jpr"/></hash>
       <hash><url n="URL" path="PracticeAdapters/PracticeAdapters.jpr"/></hash>
+      <hash><url n="URL" path="PracticelogicalPolling/PracticelogicalPolling.jpr"/></hash>
       <hash><url n="URL" path="Project1/Project1.jpr"/></hash>
    </list>
    <hash n="oracle.jdeveloper.deploy.dt.DeploymentProfiles">

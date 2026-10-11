@@ -33,6 +33,9 @@
                   <xsl:value-of select="ns0:stuName"/>
                </tns:stuName>
                <tns:grade/>
+               <tns:status>
+                  <xsl:value-of select="'New'"/>
+               </tns:status>
             </tns:StuResult>
          </xsl:for-each>
       </tns:StuResultCollection>

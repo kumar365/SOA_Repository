@@ -7,7 +7,7 @@
       <partnerlink name="STU_DB_Polling" x="13" y="90" side="left"/>
       <partnerlink name="STU_Result_Insert_Adapter" x="581" y="286" side="right"/>
    </partnerlink_locations>
-   <graph_layout viewport="0,0,752,372" show_swimlanes="true">
+   <graph_layout viewport="0,0,752,378" show_swimlanes="true">
       <layout_item collapsed="false" xpath="/process" type="process" showhandlers="true"/>
       <layout_item collapsed="false" xpath="/process/sequence" type="sequence"/>
    </graph_layout>

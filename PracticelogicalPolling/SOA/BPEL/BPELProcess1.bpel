@@ -1,0 +1,40 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer
+
+  Created: Sun Oct 11 11:01:18 GMT 2026
+  Author:  kumar
+  Type: BPEL 2.0 Process
+  Purpose: Empty BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="BPELProcess1"
+               targetNamespace="http://xmlns.oracle.com/SOAApplication/PracticelogicalPolling/BPELProcess1"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.oracle.com/SOAApplication/PracticelogicalPolling/BPELProcess1"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+               xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://xmlns.oracle.com/pcbpel/adapter/db/SOAApplication/PracticelogicalPolling/Stu_Result_Logical_Polling">
+
+  <!--
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC
+     Set of activities coordinating the flow of messages across the
+     services integrated within this business process
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <partnerLinks>
+    <partnerLink name="Stu_Result_Logical_Polling" partnerLinkType="ns1:Stu_Result_Logical_Polling_plt"
+                 myRole="Stu_Result_Logical_Polling_role"/>
+  </partnerLinks>
+  <variables>
+    <variable name="STU_result_Receive_InputVariable" messageType="ns1:StuResultCollection_msg"/>
+  </variables>
+  <sequence name="main">
+    <receive name="STU_result_Receive" partnerLink="Stu_Result_Logical_Polling"
+             portType="ns1:Stu_Result_Logical_Polling_ptt" operation="receive"
+             variable="STU_result_Receive_InputVariable" createInstance="yes"/>
+  </sequence>
+</process>
