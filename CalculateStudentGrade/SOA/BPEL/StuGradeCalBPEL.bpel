@@ -1,0 +1,57 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer
+
+  Created: Sat Oct 10 12:53:25 GMT 2026
+  Author:  kumar
+  Type: BPEL 2.0 Process
+  Purpose: Empty BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="StuGradeCalBPEL"
+               targetNamespace="http://xmlns.oracle.com/SOAApplication/CalculateStudentGrade/StuGradeCalBPEL"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.oracle.com/SOAApplication/CalculateStudentGrade/StuGradeCalBPEL"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+               xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://xmlns.oracle.com/pcbpel/adapter/db/SOAApplication/CalculateStudentGrade/STU_DB_Polling"
+         xmlns:ui="http://xmlns.oracle.com/soa/designer"
+         xmlns:ns2="http://xmlns.oracle.com/pcbpel/adapter/db/SOAApplication/CalculateStudentGrade/STU_Result_Insert_Adapter">
+
+  <!--
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC
+     Set of activities coordinating the flow of messages across the
+     services integrated within this business process
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/SOAApplication/CalculateStudentGrade/STU_DB_Polling"
+          location="../WSDLs/STU_DB_Polling.wsdl" importType="http://schemas.xmlsoap.org/wsdl/" ui:processWSDL="true"/>
+  <partnerLinks>
+    <partnerLink name="STU_DB_Polling" partnerLinkType="ns1:STU_DB_Polling_plt" myRole="STU_DB_Polling_role"/>
+    <partnerLink name="STU_Result_Insert_Adapter" partnerLinkType="ns2:STU_Result_Insert_Adapter_plt"
+                 partnerRole="STU_Result_Insert_Adapter_role"/>
+  </partnerLinks>
+  <variables>
+    <variable name="Stu_info_Receive_InputVariable" messageType="ns1:StuInfoCollection_msg"/>
+    <variable name="STU_result_insert_Invoke_InputVariable" messageType="ns2:StuResultCollection_msg"/>
+  </variables>
+  <sequence name="main">
+    <receive name="Stu_info_Receive" partnerLink="STU_DB_Polling" portType="ns1:STU_DB_Polling_ptt"
+             operation="receive" variable="Stu_info_Receive_InputVariable" createInstance="yes"/>
+    <assign name="Transformation1">
+      <bpelx:annotation>
+        <bpelx:pattern patternName="bpelx:transformation"></bpelx:pattern>
+      </bpelx:annotation>
+      <copy>
+        <from>ora:doXSLTransformForDoc("../Transformations/Transformation1_1.xsl", $Stu_info_Receive_InputVariable.StuInfoCollection)</from>
+        <to variable="STU_result_insert_Invoke_InputVariable" part="StuResultCollection"/>
+      </copy>
+    </assign>
+    <invoke name="STU_result_insert_Invoke" partnerLink="STU_Result_Insert_Adapter"
+            portType="ns2:STU_Result_Insert_Adapter_ptt" operation="merge"
+            inputVariable="STU_result_insert_Invoke_InputVariable" bpelx:invokeAsDetail="no"/>
+  </sequence>
+</process>

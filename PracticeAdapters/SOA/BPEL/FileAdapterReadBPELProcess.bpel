@@ -18,7 +18,8 @@
                xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
          xmlns:ns1="http://xmlns.oracle.com/pcbpel/adapter/file/SOAApplication/PracticeAdapters/File_Read_StudentInfo"
          xmlns:ui="http://xmlns.oracle.com/soa/designer"
-         xmlns:ns2="http://xmlns.oracle.com/pcbpel/adapter/file/SOAApplication/PracticeAdapters/File_Write_StuResult">
+         xmlns:ns2="http://xmlns.oracle.com/pcbpel/adapter/file/SOAApplication/PracticeAdapters/File_Write_StuResult"
+         xmlns:ns3="http://xmlns.oracle.com/pcbpel/adapter/db/SOAApplication/PracticeAdapters/stu_info_insert">
 
   <!--
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -33,6 +34,7 @@
   <partnerLinks>
     <partnerLink name="File_Read_StudentInfo" partnerLinkType="ns1:Read_plt" myRole="Read_role"/>
     <partnerLink name="File_Write_StuResult" partnerLinkType="ns2:Write_plt" partnerRole="Write_role"/>
+    <partnerLink name="stu_info_insert" partnerLinkType="ns3:stu_info_insert_plt" partnerRole="stu_info_insert_role"/>
   </partnerLinks>
   <variables>
     <variable name="File_Read_InputVariable" messageType="ns1:Read_msg"/>
@@ -61,6 +63,24 @@
         <invoke name="Invoke_File_Adapter_Write" partnerLink="File_Write_StuResult"
                 portType="ns2:Write_ptt" operation="Write" inputVariable="File_Adapter_Write_InputVariable"
                 bpelx:invokeAsDetail="no"/>
+        <scope name="Scope_insert_db">
+          <variables>
+            <variable name="Invoke_db_merge_InputVariable" messageType="ns3:StuInfoCollection_msg"/>
+          </variables>
+          <sequence name="Sequence2">
+            <assign name="stu_insert_Transformation">
+              <bpelx:annotation>
+                <bpelx:pattern patternName="bpelx:transformation"></bpelx:pattern>
+              </bpelx:annotation>
+              <copy>
+                <from>ora:doXSLTransformForDoc("../Transformations/Transformation1_2.xsl", $File_Read_InputVariable.body)</from>
+                <to variable="Invoke_db_merge_InputVariable" part="StuInfoCollection"/>
+              </copy>
+            </assign>
+            <invoke name="Invoke_db" partnerLink="stu_info_insert" portType="ns3:stu_info_insert_ptt" operation="merge"
+                    inputVariable="Invoke_db_merge_InputVariable" bpelx:invokeAsDetail="no"/>
+          </sequence>
+        </scope>
       </sequence>
     </scope>
   </sequence>

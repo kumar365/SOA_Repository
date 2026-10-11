@@ -15,6 +15,8 @@
           location="WSDLs/File_Read_StudentInfo.wsdl" importType="wsdl"/>
   <import namespace="http://xmlns.oracle.com/pcbpel/adapter/file/SOAApplication/PracticeAdapters/File_Write_StuResult"
           location="WSDLs/File_Write_StuResult.wsdl" importType="wsdl"/>
+  <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/SOAApplication/PracticeAdapters/stu_info_insert"
+          location="WSDLs/stu_info_insert.wsdl" importType="wsdl"/>
   <service name="File_Read_StudentInfo" ui:wsdlLocation="WSDLs/File_Read_StudentInfo.wsdl">
     <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/file/SOAApplication/PracticeAdapters/File_Read_StudentInfo#wsdl.interface(Read_ptt)"/>
     <binding.jca config="Adapters/File_Read_StudentInfo_file.jca">
@@ -32,6 +34,9 @@
       <reference name="File_Write_StuResult" ui:wsdlLocation="WSDLs/File_Write_StuResult.wsdl">
         <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/file/SOAApplication/PracticeAdapters/File_Write_StuResult#wsdl.interface(Write_ptt)"/>
       </reference>
+      <reference name="stu_info_insert" ui:wsdlLocation="WSDLs/stu_info_insert.wsdl">
+        <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/SOAApplication/PracticeAdapters/stu_info_insert#wsdl.interface(stu_info_insert_ptt)"/>
+      </reference>
     </componentType>
     <property name="bpel.config.transaction" type="xs:string" many="false">required</property>
     <property name="bpel.config.oneWayDeliveryPolicy" type="xs:string" many="false">sync</property>
@@ -41,6 +46,15 @@
     <binding.jca config="Adapters/File_Write_StuResult_file.jca"/>
     <property name="OUTBOUND" type="xs:string" many="false" override="may"></property>
   </reference>
+  <reference name="stu_info_insert" ui:wsdlLocation="WSDLs/stu_info_insert.wsdl">
+    <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/SOAApplication/PracticeAdapters/stu_info_insert#wsdl.interface(stu_info_insert_ptt)"/>
+    <binding.jca config="Adapters/stu_info_insert_db.jca">
+      <property name="jca.retry.count" type="xs:int" many="false" override="may">4</property>
+      <property name="jca.retry.interval" type="xs:int" many="false" override="may">1</property>
+      <property name="jca.retry.backoff" type="xs:int" many="false" override="may">2</property>
+      <property name="jca.retry.maxInterval" type="xs:int" many="false" override="may">120</property>
+    </binding.jca>
+  </reference>
   <wire>
     <source.uri>File_Read_StudentInfo</source.uri>
     <target.uri>FileAdapterReadBPELProcess/File_Read_StudentInfo</target.uri>
@@ -48,5 +62,9 @@
   <wire>
     <source.uri>FileAdapterReadBPELProcess/File_Write_StuResult</source.uri>
     <target.uri>File_Write_StuResult</target.uri>
+  </wire>
+  <wire>
+    <source.uri>FileAdapterReadBPELProcess/stu_info_insert</source.uri>
+    <target.uri>stu_info_insert</target.uri>
   </wire>
 </composite>

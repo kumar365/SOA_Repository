@@ -1,0 +1,29 @@
+<wsdl:definitions
+     name="STU_DB_Polling"
+     targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/SOAApplication/CalculateStudentGrade/STU_DB_Polling"
+     xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/SOAApplication/CalculateStudentGrade/STU_DB_Polling"
+     xmlns:jca="http://xmlns.oracle.com/pcbpel/wsdl/jca/"
+     xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+     xmlns:pc="http://xmlns.oracle.com/pcbpel/"
+     xmlns:top="http://xmlns.oracle.com/pcbpel/adapter/db/top/STU_DB_Polling"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    >
+  <plt:partnerLinkType name="STU_DB_Polling_plt" >
+    <plt:role name="STU_DB_Polling_role" >
+      <plt:portType name="tns:STU_DB_Polling_ptt" />
+    </plt:role>
+  </plt:partnerLinkType>
+    <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema" >
+        <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/STU_DB_Polling" schemaLocation="../Schemas/STU_DB_Polling_table.xsd" />
+      </schema>
+    </wsdl:types>
+    <wsdl:message name="StuInfoCollection_msg">
+        <wsdl:part name="StuInfoCollection" element="top:StuInfoCollection"/>
+    </wsdl:message>
+    <wsdl:portType name="STU_DB_Polling_ptt">
+        <wsdl:operation name="receive">
+            <wsdl:input message="tns:StuInfoCollection_msg"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>
