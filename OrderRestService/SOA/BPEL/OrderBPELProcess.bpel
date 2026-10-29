@@ -1,0 +1,97 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer
+
+  Created: Wed Oct 21 16:41:35 GMT 2026
+  Author:  kumar
+  Type: BPEL 2.0 Process
+  Purpose: Empty BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="OrderBPELProcess"
+               targetNamespace="http://xmlns.oracle.com/SOAApplication/OrderRestService/OrderBPELProcess"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.oracle.com/SOAApplication/OrderRestService/OrderBPELProcess"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+               xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://xmlns.oracle.com/pcbpel/adapter/db/SOAApplication/OrderRestService/DatabasService"
+         xmlns:ns2="http://xmlns.oracle.com/SOAApplication/OrderRestService/OrderRestService"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ns3="http://xmlns.oracle.com/pcbpel/adapter/db/top/DatabasService"
+         xmlns:ns4="http://practice.com/order/create/request" xmlns:ns5="http://practice.com/order/response"
+         xmlns:ui="http://xmlns.oracle.com/soa/designer">
+
+  <!--
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC
+     Set of activities coordinating the flow of messages across the
+     services integrated within this business process
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/SOAApplication/OrderRestService/DatabasService"
+          location="../WSDLs/DatabasService.wsdl" importType="http://schemas.xmlsoap.org/wsdl/" ui:processWSDL="true"/>
+  <partnerLinks>
+    <partnerLink name="DatabasService" partnerLinkType="ns1:DatabasService_plt" partnerRole="DatabasService_role"/>
+    <partnerLink name="OrderRestService" partnerLinkType="ns2:OrderRestService" myRole="OrderRestServiceProvider"/>
+  </partnerLinks>
+  <variables>
+    <variable name="CreateOperation_InputVariable" messageType="ns2:CreateOperation_inputMessage"/>
+    <variable name="InvokeDB_Variable" messageType="ns1:OrderInfoCollection_msg"/>
+    <variable name="OrderStatusReply_OutputVariable" messageType="ns2:CreateOperation_outputMessage"/>
+  </variables>
+  <sequence name="main">
+    <pick name="Pick1" createInstance="yes">
+      <onMessage bpelx:name="CreateOperation" partnerLink="OrderRestService" variable="CreateOperation_InputVariable"
+                 portType="ns2:OrderRestService_ptt" operation="CreateOperation">
+        <sequence name="Sequence1">
+          <assign name="Assign1">
+            <copy>
+              <from>$CreateOperation_InputVariable.request/ns4:ord_id</from>
+              <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$InvokeDB_Variable.OrderInfoCollection/ns3:OrderInfo/ns3:ordId</to>
+            </copy>
+            <copy>
+              <from>$CreateOperation_InputVariable.request/ns4:cust_id</from>
+              <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$InvokeDB_Variable.OrderInfoCollection/ns3:OrderInfo/ns3:custId</to>
+            </copy>
+            <copy>
+              <from>$CreateOperation_InputVariable.request/ns4:cust_name</from>
+              <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$InvokeDB_Variable.OrderInfoCollection/ns3:OrderInfo/ns3:custName</to>
+            </copy>
+            <copy>
+              <from>$CreateOperation_InputVariable.request/ns4:item_name</from>
+              <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$InvokeDB_Variable.OrderInfoCollection/ns3:OrderInfo/ns3:itemName</to>
+            </copy>
+            <copy>
+              <from>$CreateOperation_InputVariable.request/ns4:item_cost</from>
+              <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$InvokeDB_Variable.OrderInfoCollection/ns3:OrderInfo/ns3:itemCost</to>
+            </copy>
+            <copy>
+              <from>$CreateOperation_InputVariable.request/ns4:status</from>
+              <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$InvokeDB_Variable.OrderInfoCollection/ns3:OrderInfo/ns3:status</to>
+            </copy>
+          </assign>
+          <invoke name="InvokeDB" partnerLink="DatabasService" portType="ns1:DatabasService_ptt" operation="merge"
+                  inputVariable="OrderReceive_InputVariable" bpelx:invokeAsDetail="no"/>
+          <assign name="Assign2">
+            <copy>
+              <from>$InvokeDB_Variable.OrderInfoCollection/ns3:OrderInfo/ns3:ordId</from>
+              <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$OrderStatusReply_OutputVariable.reply/ns5:ordid</to>
+            </copy>
+            <copy>
+              <from>$InvokeDB_Variable.OrderInfoCollection/ns3:OrderInfo/ns3:custId</from>
+              <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$OrderStatusReply_OutputVariable.reply/ns5:custid</to>
+            </copy>
+            <copy>
+              <from>$InvokeDB_Variable.OrderInfoCollection/ns3:OrderInfo/ns3:status</from>
+              <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$OrderStatusReply_OutputVariable.reply/ns5:orderstatus</to>
+            </copy>
+          </assign>
+          <reply name="OrderStatusReply" partnerLink="OrderRestService" variable="OrderStatusReply_OutputVariable"
+                 portType="ns2:OrderRestService_ptt" operation="CreateOperation"/>
+        </sequence>
+      </onMessage>
+    </pick>
+  </sequence>
+</process>

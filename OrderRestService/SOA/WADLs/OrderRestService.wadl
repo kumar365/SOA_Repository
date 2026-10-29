@@ -1,0 +1,24 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<application xmlns:soa="http://www.oracle.com/soa/rest" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns0="http://practice.com/order/create/request" xmlns="http://wadl.dev.java.net/2009/02">
+   <doc title="OrderRestService">RestService</doc>
+   <grammars>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://practice.com/order/create/request" schemaLocation="../Schemas/orderRequest.xsd"/>
+        </xsd:schema>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://practice.com/order/response" schemaLocation="../Schemas/orderResponse.xsd"/>
+        </xsd:schema>
+   </grammars>
+   <resources>
+      <resource path="/oerder/create">
+         <method name="POST" soa:wsdlOperation="CreateOperation">
+            <request>
+               <representation mediaType="application/json" element="cns:OrderCreateRequest" xmlns:cns="http://practice.com/order/create/request"/>
+            </request>
+            <response status="200">
+               <representation mediaType="application/json" element="cns:OrderResponse" xmlns:cns="http://practice.com/order/response"/>
+            </response>
+         </method>
+      </resource>
+   </resources>
+</application>
